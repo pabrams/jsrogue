@@ -163,7 +163,7 @@ Game.Screen.playScreen = {
         }
         if (inputType === 'keydown') {
             switch (inputData.keyCode) {
-                // for laptop users, use alt and control to modify left/right keys for up/down directions
+                // as alternative to numpad, use shift and control to modify left/right keys for up/down diagonals
                 case ROT.VK_LEFT:
                     if (inputData.shiftKey){ // left up
                         this.move(-1, -1, 0);
@@ -682,7 +682,7 @@ Game.Screen.TargetBasedScreen.prototype.handleInput = function(inputType, inputD
 
     if (inputType == 'keydown') {
         switch (inputData.keyCode) {
-            // for laptop users, use alt and control to modify left/right keys for up/down directions
+            // as alternative to numpad, use shift and control to modify left/right keys for up/down directions
             case ROT.VK_LEFT:
                 if (inputData.shiftKey){ // left up
                     this.moveCursor(-1, -1);
