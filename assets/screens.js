@@ -162,31 +162,92 @@ Game.Screen.playScreen = {
             return;
         }
         if (inputType === 'keydown') {
-            // Movement
-            if (inputData.keyCode === ROT.VK_LEFT) {
-            } else if (inputData.keyCode === ROT.VK_UP) {
-                this.move(0, -1, 0);
-            } else if (inputData.keyCode === ROT.VK_DOWN) {
-                this.move(0, 1, 0);
-            } else if (inputData.keyCode === ROT.VK_I) {
-                // Show the inventory screen
-                this.showItemsSubScreen(Game.Screen.inventoryScreen, this._player.getItems(),
-                    this._player.getY(), this._player.getZ());
-                // If there is only one item, directly pick it up
-                if (items && items.length === 1) {
-                    var item = items[0];
-                    if (this._player.pickupItems([0])) {
-                        Game.sendMessage(this._player, "You pick up %s.", [item.describeA()]);
-                    } else {
-                        Game.sendMessage(this._player, "Your inventory is full! Nothing was picked up.");
+            switch (inputData.keyCode) {
+                // for laptop users, use alt and control to modify left/right keys for up/down directions
+                case ROT.VK_LEFT:
+                    if (inputData.shiftKey){ // left up
+                        this.move(-1, -1, 0);
+                    }else if (inputData.ctrlKey){ // left down
+                        this.move(-1, 1, 0);
+                    }else { // left
+                        this.move(-1, 0, 0);
                     }
-                } else {
-                    this.showItemsSubScreen(Game.Screen.pickupScreen, items,
-                        'There is nothing here to pick up.');
-                } 
-            } else {
-                // Not a valid key
-                return;
+                    break;
+                case ROT.VK_RIGHT:
+                    if (inputData.shiftKey){ // right up
+                        this.move(1, -1, 0);
+                    }else if (inputData.ctrlKey){ // right down
+                        this.move(1, 1, 0);
+                    }else { // right
+                        this.move(1, 0, 0);
+                    }
+                    break;
+                case ROT.VK_NUMPAD1: // left down
+                    this.move(-1, 1, 0);
+                    break;
+                case ROT.VK_NUMPAD2: // down
+                case ROT.VK_DOWN:
+                    this.move(0, 1, 0);
+                    break;
+                case ROT.VK_NUMPAD3: // right down
+                    this.move(1, 1, 0);
+                    break;
+                case ROT.VK_LEFT:
+                case ROT.VK_NUMPAD4: // left
+                    this.move(-1, 0, 0);
+                    break;
+                case ROT.VK_NUMPAD5: // wait
+                    // TODO: wait one turn
+                    break;
+                case ROT.VK_NUMPAD6: // right
+                    this.move(1, 0, 0);
+                    break;
+                case ROT.VK_NUMPAD7: // left up
+                    this.move(-1, -1, 0);
+                    break;
+                case ROT.VK_NUMPAD8: // up
+                case ROT.VK_UP:
+                    this.move(0, -1, 0);
+                    break;
+                case ROT.VK_NUMPAD9: // right up 
+                    this.move(1, -1, 0);
+                    break;
+                case ROT.VK_I: // inventory
+                    this.showItemsSubScreen(Game.Screen.inventoryScreen, this._player.getItems(), 'You are not carrying anything.');
+                    return;
+                case ROT.VK_D: // drop 
+                    this.showItemsSubScreen(Game.Screen.dropScreen, this._player.getItems(), 'You have nothing to drop.');
+                    return;
+                case ROT.VK_E: // eat 
+                    this.showItemsSubScreen(Game.Screen.eatScreen, this._player.getItems(), 'You have nothing to eat.');
+                    return;
+                case ROT.VK_W:
+                    if (inputData.ShiftKey){ // Wear
+                        this.showItemsSubScreen(Game.Screen.wearScreen, this._player.getItems(), 'You have nothing to wear.');
+                    }else{ // wield
+                        this.showItemsSubScreen(Game.Screen.wieldScreen, this._player.getItems(), 'You have nothing to wield.');
+                    }
+                    return;
+                case ROT.VK_X: // examine
+                    this.showItemsSubScreen(Game.Screen.eatScreen, this._player.getItems(), 'You have nothing to examine.');
+                    return;
+                case ROT.VK_COMMA:
+                case ROT.VK_G: // get
+                    var items = this._player.getMap().getItemsAt(this._player.getX(), this._player.getY(), this._player.getZ());
+                    // If there is only one item, directly pick it up
+                    if (items && items.length === 1) {
+                        var item = items[0];
+                        if (this._player.pickupItems([0])) {
+                            Game.sendMessage(this._player, "You pick up %s.", [item.describeA()]);
+                        } else {
+                            Game.sendMessage(this._player, "Your inventory is full! Nothing was picked up.");
+                        }
+                    } else {
+                        this.showItemsSubScreen(Game.Screen.pickupScreen, items, 'There is nothing here to pick up.');
+                    } 
+                    break;
+                default: // invalid key
+                    return;
             }
             // Unlock the engine
             this._player.getMap().getEngine().unlock();
@@ -199,9 +260,7 @@ Game.Screen.playScreen = {
             } else if (keyChar === ';') {
                 // Setup the look screen.
                 var offsets = this.getScreenOffsets();
-                Game.Screen.lookScreen.setup(this._player,
-                    this._player.getX(), this._player.getY(),
-                    offsets.x, offsets.y);
+                Game.Screen.lookScreen.setup(this._player, this._player.getX(), this._player.getY(), offsets.x, offsets.y);
                 this.setSubScreen(Game.Screen.lookScreen);
                 return;
             } else if (keyChar === '?') {
@@ -214,7 +273,7 @@ Game.Screen.playScreen = {
             }
             // Unlock the engine
             this._player.getMap().getEngine().unlock();
-        } 
+        }
     },
     move: function(dX, dY, dZ) {
         var newX = this._player.getX() + dX;
@@ -620,19 +679,61 @@ Game.Screen.TargetBasedScreen.prototype.render = function(display) {
 
 Game.Screen.TargetBasedScreen.prototype.handleInput = function(inputType, inputData) {
     // Move the cursor
+
     if (inputType == 'keydown') {
-        if (inputData.keyCode === ROT.VK_LEFT) {
-            this.moveCursor(-1, 0);
-        } else if (inputData.keyCode === ROT.VK_RIGHT) {
-            this.moveCursor(1, 0);
-        } else if (inputData.keyCode === ROT.VK_UP) {
-            this.moveCursor(0, -1);
-        } else if (inputData.keyCode === ROT.VK_DOWN) {
-            this.moveCursor(0, 1);
-        } else if (inputData.keyCode === ROT.VK_ESCAPE) {
-            Game.Screen.playScreen.setSubScreen(undefined);
-        } else if (inputData.keyCode === ROT.VK_RETURN) {
-            this.executeOkFunction();
+        switch (inputData.keyCode) {
+            // for laptop users, use alt and control to modify left/right keys for up/down directions
+            case ROT.VK_LEFT:
+                if (inputData.shiftKey){ // left up
+                    this.moveCursor(-1, -1);
+                }else if (inputData.ctrlKey){ // left down
+                    this.moveCursor(-1, 1);
+                }else { // left
+                    this.moveCursor(-1, 0);
+                }
+                break;
+            case ROT.VK_RIGHT:
+                if (inputData.shiftKey){ // right up
+                    this.moveCursor(1, -1);
+                }else if (inputData.ctrlKey){ // right down
+                    this.moveCursor(1, 1);
+                }else { // right
+                    this.moveCursor(1, 0);
+                }
+                break;
+            case ROT.VK_NUMPAD1: // left down
+                this.moveCursor(-1, 1);
+                break;
+            case ROT.VK_NUMPAD2: // down
+            case ROT.VK_DOWN:
+                this.moveCursor(0, 1);
+                break;
+            case ROT.VK_NUMPAD3: // right down
+                this.moveCursor(1, 1);
+                break;
+            case ROT.VK_LEFT:
+            case ROT.VK_NUMPAD4: // left
+                this.moveCursor(-1, 0);
+                break;
+            case ROT.VK_NUMPAD6: // right
+                this.moveCursor(1, 0);
+                break;
+            case ROT.VK_NUMPAD7: // left up
+                this.moveCursor(-1, -1);
+                break;
+            case ROT.VK_NUMPAD8: // up
+            case ROT.VK_UP:
+                this.moveCursor(0, -1);
+                break;
+            case ROT.VK_NUMPAD9: // right up 
+                this.moveCursor(1, -1);
+                break;
+            case ROT.VK_ESCAPE: 
+                Game.Screen.playScreen.setSubScreen(undefined);
+                break;
+            case ROT.VK_RETURN: 
+                this.executeOkFunction();
+                break;
         }
     }
     Game.refresh();
@@ -744,16 +845,20 @@ Game.Screen.helpScreen = {
         var y = 0;
         display.drawText(Game.getScreenWidth() / 2 - text.length / 2, y++, text);
         display.drawText(Game.getScreenWidth() / 2 - text.length / 2, y++, border);
-        display.drawText(0, y++, 'The villagers have been complaining of a terrible stench coming from the cave.');
-        display.drawText(0, y++, 'Find the source of this smell and get rid of it!');
+        display.drawText(0, y++, 'Something is not right.');
+        display.drawText(0, y++, 'Better save the day!');
         y += 3;
-        display.drawText(0, y++, '[,] to pick up items');
+        display.drawText(0, y++, '[g] to pick up items');
         display.drawText(0, y++, '[d] to drop items');
         display.drawText(0, y++, '[e] to eat items');
         display.drawText(0, y++, '[w] to wield items');
-        display.drawText(0, y++, '[W] to wield items');
+        display.drawText(0, y++, '[W] to ear items');
         display.drawText(0, y++, '[x] to examine items');
         display.drawText(0, y++, '[;] to look around you');
+        display.drawText(0, y++, '');
+        display.drawText(0, y++, 'Numeric keybad or arrow keys to move');
+        display.drawText(0, y++, 'Use Ctrl and Shift with left and right to move diagonally');
+        display.drawText(0, y++, '');
         display.drawText(0, y++, '[?] to show this help screen');
         y += 3;
         text = '--- press any key to continue ---';
