@@ -2,12 +2,12 @@ Game.Screen = {};
 
 // Define our initial start screen
 Game.Screen.startScreen = {
-    enter: function() {    console.log("Entered start screen."); },
-    exit: function() { console.log("Exited start screen."); },
+    enter: function() {console.log("Entered start screen.");},
+    exit: function() {console.log("Exited start screen.");},
     render: function(display) {
         // Render our prompt to the screen
-        display.drawText(1,1, "%c{yellow}Javascript Roguelike");
-        display.drawText(1,2, "Press [Enter] to start!");
+        display.drawText(1,1, "%c{red}jsrogue");
+        display.drawText(1,2, "%c{white}Press [Enter] to start!");
     },
     handleInput: function(inputType, inputData) {
         // When [Enter] is pressed, go to the play screen
