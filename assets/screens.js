@@ -6,8 +6,9 @@ Game.Screen.startScreen = {
     exit: function() {console.log("Exited start screen.");},
     render: function(display) {
         // Render our prompt to the screen
-        display.drawText(1,1, "%c{red}jsrogue");
-        display.drawText(1,2, "%c{white}Press [Enter] to start!");
+        display.drawText(5,1, "%c{yellow}jsrogue");
+        display.drawText(5,2, "%c{yellow}~~~~~~~");
+        display.drawText(1,20, "%c{white}Press [Enter] to start");
     },
     handleInput: function(inputType, inputData) {
         // When [Enter] is pressed, go to the play screen
@@ -163,9 +164,6 @@ Game.Screen.playScreen = {
         if (inputType === 'keydown') {
             // Movement
             if (inputData.keyCode === ROT.VK_LEFT) {
-                this.move(-1, 0, 0);
-            } else if (inputData.keyCode === ROT.VK_RIGHT) {
-                this.move(1, 0, 0);
             } else if (inputData.keyCode === ROT.VK_UP) {
                 this.move(0, -1, 0);
             } else if (inputData.keyCode === ROT.VK_DOWN) {
@@ -173,36 +171,6 @@ Game.Screen.playScreen = {
             } else if (inputData.keyCode === ROT.VK_I) {
                 // Show the inventory screen
                 this.showItemsSubScreen(Game.Screen.inventoryScreen, this._player.getItems(),
-                    'You are not carrying anything.');
-                return;
-            } else if (inputData.keyCode === ROT.VK_D) {
-                // Show the drop screen
-                this.showItemsSubScreen(Game.Screen.dropScreen, this._player.getItems(),
-                    'You have nothing to drop.');
-                return;
-            } else if (inputData.keyCode === ROT.VK_E) {
-                // Show the drop screen
-                this.showItemsSubScreen(Game.Screen.eatScreen, this._player.getItems(),
-                   'You have nothing to eat.');
-                return;
-            } else if (inputData.keyCode === ROT.VK_W) {
-                if (inputData.shiftKey) {
-                    // Show the wear screen
-                    this.showItemsSubScreen(Game.Screen.wearScreen, this._player.getItems(),
-                        'You have nothing to wear.');
-                } else {
-                    // Show the wield screen
-                    this.showItemsSubScreen(Game.Screen.wieldScreen, this._player.getItems(),
-                        'You have nothing to wield.');
-                }
-                return;
-            } else if (inputData.keyCode === ROT.VK_X) {
-                // Show the drop screen
-                this.showItemsSubScreen(Game.Screen.examineScreen, this._player.getItems(),
-                   'You have nothing to examine.');
-                return;
-            } else if (inputData.keyCode === ROT.VK_COMMA) {
-                var items = this._player.getMap().getItemsAt(this._player.getX(), 
                     this._player.getY(), this._player.getZ());
                 // If there is only one item, directly pick it up
                 if (items && items.length === 1) {
