@@ -135,7 +135,7 @@ Game.Screen.playScreen = {
                         // Since the tile was previously explored but is not 
                         // visible, we want to change the foreground color to
                         // dark gray.
-                        foreground = 'darkGray';
+                        foreground = 'darkslategray';
                     }
                     display.draw(
                         x - topLeftX,
@@ -223,7 +223,7 @@ Game.Screen.playScreen = {
                     this.showItemsSubScreen(Game.Screen.eatScreen, this._player.getItems(), 'You have nothing to eat.');
                     return;
                 case ROT.VK_W:
-                    if (inputData.ShiftKey){ // Wear
+                    if (inputData.shiftKey){ // Wear
                         this.showItemsSubScreen(Game.Screen.wearScreen, this._player.getItems(), 'You have nothing to wear.');
                     }else{ // wield
                         this.showItemsSubScreen(Game.Screen.wieldScreen, this._player.getItems(), 'You have nothing to wield.');

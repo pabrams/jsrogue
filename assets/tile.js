@@ -29,6 +29,7 @@ Game.Tile.prototype.getDescription = function() {
 Game.Tile.nullTile = new Game.Tile({description: '(unknown)'});
 Game.Tile.floorTile = new Game.Tile({
     character: '.',
+    foreground: 'darkgray',
     walkable: true,
     blocksLight: false,
     description: 'A cave floor'
