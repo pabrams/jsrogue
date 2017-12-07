@@ -48,18 +48,13 @@ Game.EntityMixins.FungusActor = {
                 if (xOffset != 0 || yOffset != 0) {
                     // Check if we can actually spawn at that location, and if so
                     // then we grow!
-                    if (this.getMap().isEmptyFloor(this.getX() + xOffset,
-                                                   this.getY() + yOffset,
-                                                   this.getZ())) {
+                    if (this.getMap().isEmptyFloor(this.getX() + xOffset, this.getY() + yOffset, this.getZ())) {
                         var entity = Game.EntityRepository.create('fungus');
-                        entity.setPosition(this.getX() + xOffset, this.getY() + yOffset, 
-                            this.getZ());
+                        entity.setPosition(this.getX() + xOffset, this.getY() + yOffset, this.getZ());
                         this.getMap().addEntity(entity);
                         this._growthsRemaining--;
                         // Send a message nearby!
-                        Game.sendMessageNearby(this.getMap(),
-                            entity.getX(), entity.getY(), entity.getZ(),
-                            'The fungus is spreading!');
+                        Game.sendMessageNearby(this.getMap(), entity.getX(), entity.getY(), entity.getZ(),'The fungus is spreading!');
                     }
                 }
             }
@@ -165,8 +160,7 @@ Game.EntityMixins.GiantZombieActor = Game.extend(Game.EntityMixins.TaskActor, {
         this.increaseAttackValue(5);
         // Send a message saying the zombie grew an arm.
         Game.sendMessageNearby(this.getMap(),
-            this.getX(), this.getY(), this.getZ(),
-            'An extra arm appears on the giant zombie!');
+            this.getX(), this.getY(), this.getZ(), 'An extra arm appears on the giant zombie!');
     },
     spawnSlime: function() {
         // Generate a random position nearby.
@@ -232,10 +226,8 @@ Game.EntityMixins.Attacker = {
             var max = Math.max(0, attack - defense);
             var damage = 1 + Math.floor(Math.random() * max);
 
-            Game.sendMessage(this, 'You strike the %s for %d damage!', 
-                [target.getName(), damage]);
-            Game.sendMessage(target, 'The %s strikes you for %d damage!', 
-                [this.getName(), damage]);
+            Game.sendMessage(this, 'You strike the %s for %d damage!', [target.getName(), damage]);
+            Game.sendMessage(target, 'The %s strikes you for %d damage!', [this.getName(), damage]);
 
             target.takeDamage(this, damage);
         }
