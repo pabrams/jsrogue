@@ -196,8 +196,9 @@ Game.Screen.playScreen = {
                 case ROT.VK_NUMPAD4: // left
                     this.move(-1, 0, 0);
                     break;
+                case ROT.VK_PERIOD:
                 case ROT.VK_NUMPAD5: // wait
-                    // TODO: wait one turn
+                    // wait one turn
                     break;
                 case ROT.VK_NUMPAD6: // right
                     this.move(1, 0, 0);
@@ -249,7 +250,7 @@ Game.Screen.playScreen = {
                 default: // invalid key
                     return;
             }
-            // Unlock the engine
+            // allow a game turn to pass
             this._player.getMap().getEngine().unlock();
         } else if (inputType === 'keypress') {
             var keyChar = String.fromCharCode(inputData.charCode);
@@ -271,7 +272,7 @@ Game.Screen.playScreen = {
                 // Not a valid key
                 return;
             }
-            // Unlock the engine
+            // allow a game turn to pass
             this._player.getMap().getEngine().unlock();
         }
     },
@@ -855,6 +856,7 @@ Game.Screen.helpScreen = {
         display.drawText(0, y++, '[W] to wear items');
         display.drawText(0, y++, '[x] to examine items');
         display.drawText(0, y++, '[;] to look around you');
+        display.drawText(0, y++, '[.] to wait (numpad5 also works)');
         display.drawText(0, y++, '');
         display.drawText(0, y++, 'Numeric keybad or arrow keys to move');
         display.drawText(0, y++, 'Use Ctrl and Shift with left and right to move diagonally');
