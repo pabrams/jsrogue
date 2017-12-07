@@ -846,8 +846,6 @@ Game.Screen.helpScreen = {
         var y = 0;
         display.drawText(Game.getScreenWidth() / 2 - text.length / 2, y++, text);
         display.drawText(Game.getScreenWidth() / 2 - text.length / 2, y++, border);
-        display.drawText(0, y++, 'Something is not right.');
-        display.drawText(0, y++, 'Better save the day!');
         y += 3;
         display.drawText(0, y++, '[g] to pick up items');
         display.drawText(0, y++, '[d] to drop items');
