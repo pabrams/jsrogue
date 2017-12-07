@@ -198,7 +198,7 @@ Game.Screen.playScreen = {
                     break;
                 case ROT.VK_PERIOD:
                 case ROT.VK_NUMPAD5: // wait
-                    // wait one turn
+                    Game.sendMessage(this._player, "You wait a bit.");
                     break;
                 case ROT.VK_NUMPAD6: // right
                     this.move(1, 0, 0);

@@ -120,6 +120,8 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
         // If not nothing we can do, but we can't 
         // move to the tile
         return false;
+    } else {
+        Game.sendMessage(this, "You can't go that way.");
     }
     return false;
 };
