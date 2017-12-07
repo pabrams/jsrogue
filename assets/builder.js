@@ -105,12 +105,12 @@ Game.Builder.prototype._fillRegion = function(region, x, y, z) {
 };
 
 // This removes all tiles at a given depth level with a region number.
-// It fills the tiles with a wall tile.
+// It fills the tiles with a rock tile.
 Game.Builder.prototype._removeRegion = function(region, z) {
     for (var x = 0; x < this._width; x++) {
         for (var y = 0; y < this._height; y++) {
             if (this._regions[z][x][y] == region) {
-                // Clear the region and set the tile to a wall tile
+                // Clear the region and set the tile to a rock tile
                 this._regions[z][x][y] = 0;
                 this._tiles[z][x][y] = Game.Tile.rockTile;
             }
