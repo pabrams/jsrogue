@@ -42,7 +42,7 @@ Game.Map.BossCavern.prototype._generateTiles = function(width, height) {
     for (var x = 0; x < width; x++) {
         tiles[x] = new Array(height);
         for (var y = 0; y < height; y++) {
-            tiles[x][y] = Game.Tile.wallTile;
+            tiles[x][y] = Game.Tile.rockTile;
         }
     }
     // Now we determine the radius of the cave to carve out.

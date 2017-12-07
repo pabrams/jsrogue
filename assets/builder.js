@@ -56,7 +56,7 @@ Game.Builder.prototype._generateLevel = function() {
         if (v === 1) {
             map[x][y] = Game.Tile.floorTile;
         } else {
-            map[x][y] = Game.Tile.wallTile;
+            map[x][y] = Game.Tile.rockTile;
         }
     });
     return map;
@@ -112,7 +112,7 @@ Game.Builder.prototype._removeRegion = function(region, z) {
             if (this._regions[z][x][y] == region) {
                 // Clear the region and set the tile to a wall tile
                 this._regions[z][x][y] = 0;
-                this._tiles[z][x][y] = Game.Tile.wallTile;
+                this._tiles[z][x][y] = Game.Tile.rockTile;
             }
         }
     }
