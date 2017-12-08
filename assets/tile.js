@@ -47,14 +47,14 @@ Game.Tile.rockTile = new Game.Tile({
     description: 'Impassable rock'
 });
 Game.Tile.stairsUpTile = new Game.Tile({
-    character: '<',
+    character: '^',
     foreground: 'white',
     walkable: true,
     blocksLight: false,
     description: 'A rock staircase leading upwards'
 });
 Game.Tile.stairsDownTile = new Game.Tile({
-    character: '>',
+    character: 'v',
     foreground: 'white',
     walkable: true,
     blocksLight: false,
