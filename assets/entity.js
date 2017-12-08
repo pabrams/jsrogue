@@ -109,6 +109,12 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
                 Game.sendMessage(this, "There are several objects here.");
             }
         }
+        if (tile === Game.Tile.stairsDownTile){
+            Game.sendMessage(this, "There are some stairs here leading down.");
+        }
+        if (tile === Game.Tile.stairsUpTile){
+            Game.sendMessage(this, "There are some stairs here leading up.");
+        }
         return true;
     // Check if the tile is diggable
     } else if (tile.isDiggable()) {
