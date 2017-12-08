@@ -853,7 +853,7 @@ Game.Screen.characterScreen = {
         display.drawText(Game.getScreenWidth() / 2 - border.length / 2, y++, border);
         y++;
         
-        display.drawText (5, y++, "Level:       " + player.getExperience());
+        display.drawText (5, y++, "Level:       " + player.getLevel());
         display.drawText (5, y++, "Experience:  " + player.getExperience());
         display.drawText (5, y++, "Stat points: " + player.getStatPoints());
         display.drawText (5, y++, "Attack:      " + player.getAttackValue());
