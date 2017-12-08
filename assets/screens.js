@@ -230,7 +230,7 @@ Game.Screen.playScreen = {
                     }
                     return;
                 case ROT.VK_X: // examine
-                    this.showItemsSubScreen(Game.Screen.eatScreen, this._player.getItems(), 'You have nothing to examine.');
+                    this.showItemsSubScreen(Game.Screen.examineScreen, this._player.getItems(), 'You have nothing to examine.');
                     return;
                 case ROT.VK_COMMA:
                 case ROT.VK_G: // get
