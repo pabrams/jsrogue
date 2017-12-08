@@ -97,7 +97,7 @@ Game.Map.prototype.setupFov = function() {
             map._fov.push(
                 new ROT.FOV.DiscreteShadowcasting(function(x, y) {
                     return !map.getTile(x, y, depth).isBlockingLight();
-                }, {topology: 4}));
+                }, {topology: 8}));
         })();
     }
 };
