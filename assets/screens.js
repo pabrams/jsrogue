@@ -232,6 +232,10 @@ Game.Screen.playScreen = {
                 case ROT.VK_X: // examine
                     this.showItemsSubScreen(Game.Screen.examineScreen, this._player.getItems(), 'You have nothing to examine.');
                     return;
+                case ROT.VK_C: // character
+                    Game.Screen.characterScreen.setup(this._player);
+                    this.setSubScreen(Game.Screen.characterScreen);
+                    return;
                 case ROT.VK_COMMA:
                 case ROT.VK_G: // get
                     var items = this._player.getMap().getItemsAt(this._player.getX(), this._player.getY(), this._player.getZ());
@@ -593,13 +597,11 @@ Game.Screen.gainStatScreen = {
 
         // Iterate through each of our options
         for (var i = 0; i < this._options.length; i++) {
-            display.drawText(0, 2 + i, 
-                letters.substring(i, i + 1) + ' - ' + this._options[i][0]);
+            display.drawText(0, 2 + i, letters.substring(i, i + 1) + ' - ' + this._options[i][0]);
         }
 
         // Render remaining stat points
-        display.drawText(0, 4 + this._options.length,
-            "Remaining points: " + this._entity.getStatPoints());   
+        display.drawText(0, 4 + this._options.length, "Remaining points: " + this._entity.getStatPoints());   
     },
     handleInput: function(inputType, inputData) {
         if (inputType === 'keydown') {
@@ -624,7 +626,6 @@ Game.Screen.gainStatScreen = {
         }
     }
 };
-
 
 Game.Screen.TargetBasedScreen = function(template) {
     template = template || {};
@@ -680,7 +681,6 @@ Game.Screen.TargetBasedScreen.prototype.render = function(display) {
 
 Game.Screen.TargetBasedScreen.prototype.handleInput = function(inputType, inputData) {
     // Move the cursor
-
     if (inputType == 'keydown') {
         switch (inputData.keyCode) {
             // as alternative to numpad, use shift and control to modify left/right keys for up/down directions
@@ -838,6 +838,38 @@ Game.Screen.lookScreen = new Game.Screen.TargetBasedScreen({
     }
 });
 
+Game.Screen.characterScreen = {
+    setup: function(entity) {
+        // Must be called before rendering.
+        this._entity = entity;
+        this._options = entity.getStatOptions();
+    },
+    render: function(display) {
+        var player = this._entity;
+        var text = 'Character Information';
+        var border = '--------------------------';
+        let y = 0;
+        display.drawText(Game.getScreenWidth() / 2 - text.length / 2, y++, text);
+        display.drawText(Game.getScreenWidth() / 2 - border.length / 2, y++, border);
+        y++;
+        
+        display.drawText (5, y++, "Level:       " + player.getExperience());
+        display.drawText (5, y++, "Experience:  " + player.getExperience());
+        display.drawText (5, y++, "Stat points: " + player.getStatPoints());
+        display.drawText (5, y++, "Attack:      " + player.getAttackValue());
+        display.drawText (5, y++, "Defense:     " + player.getDefenseValue());
+        display.drawText (5, y++, "Hit Points:  " + player.getHp() + " / " + player.getMaxHp());
+        display.drawText (5, y++, "Sight range: " + player.getSightRadius());
+        var text2 = '--- press any key to continue ---';
+        display.drawText(Game.getScreenWidth() / 2 - text2.length / 2, Game.getScreenHeight() - 1, text2);
+    },
+    handleInput: function(inputType, inputData) {
+        if (inputType === 'keydown') {
+            Game.Screen.playScreen.setSubScreen(undefined);
+        }
+    }
+};
+
 // Define our help screen
 Game.Screen.helpScreen = {
     render: function(display) {
@@ -853,6 +885,7 @@ Game.Screen.helpScreen = {
         display.drawText(0, y++, '[w] to wield items');
         display.drawText(0, y++, '[W] to wear items');
         display.drawText(0, y++, '[x] to examine items');
+        display.drawText(0, y++, '[c] to view your character information');
         display.drawText(0, y++, '[;] to look around you');
         display.drawText(0, y++, '[.] to wait (numpad5 also works)');
         display.drawText(0, y++, '');
