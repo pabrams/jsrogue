@@ -486,8 +486,8 @@ Game.EntityMixins.FoodConsumer = {
     name: 'FoodConsumer',
     init: function(template) {
         this._maxFullness = template['maxFullness'] || 1000;
-        // Start halfway to max fullness if no default value
-        this._fullness = template['fullness'] || (this._maxFullness / 2);
+        // Start 75 percent of max fullness if no default value
+        this._fullness = template['fullness'] || (this._maxFullness * 0.75);
         // Number of points to decrease fullness by every turn.
         this._fullnessDepletionRate = template['fullnessDepletionRate'] || 1;
     },
@@ -504,23 +504,29 @@ Game.EntityMixins.FoodConsumer = {
         }
     },
     getHungerState: function() {
-        // Fullness points per percent of max fullness
-        var perPercent = this._maxFullness / 100;
-        // 5% of max fullness or less = starving
-        if (this._fullness <= perPercent * 5) {
-            return 'Starving';
-        // 25% of max fullness or less = hungry
-        } else if (this._fullness <= perPercent * 25) {
+        var hungerPercent = this._fullness / this._maxFullness * 100;
+        if (hungerPercent < 2){
+            return 'Eat now or die!!!';
+        } else if (hungerPercent < 10) {
+            return 'Starving!';
+        } else if (hungerPercent < 20) {
+            return 'Ravenous';
+        } else if (hungerPercent < 30) {
+            return 'Famished';
+        }else if (hungerPercent < 40) {
+            return 'Very hungry';
+        }else if (hungerPercent < 50) {
             return 'Hungry';
-        // 95% of max fullness or more = oversatiated
-        } else if (this._fullness >= perPercent * 95) {
-            return 'Oversatiated';
-        // 75% of max fullness or more = full
-        } else if (this._fullness >= perPercent * 75) {
-            return 'Full';
-        // Anything else = not hungry
-        } else {
+        }else if (hungerPercent < 60) {
+            return 'Peckish';
+        }else if (hungerPercent < 80) {
             return 'Not Hungry';
+        }else if (hungerPercent < 90) {
+            return 'Full';
+        }else if (hungerPercent < 98) {
+            return 'Bloated';
+        }else{
+            return 'Bursting';
         }
     }
 };
