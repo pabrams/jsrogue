@@ -4,11 +4,18 @@
   "description": "A roguelike game",
   "main": "index.html",
   "dependencies": {
+    "rot-js": "0.5.2",
+    "sprintf-js": "^1.1.1",
     "tsc": "^1.20150623.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "uglify-js": "^3.2.2"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "npm run minify-rot",
+    "minify-rot": "uglifyjs node_modules/rot-js/lib/rot.js -c -m -o node_modules/rot-js/rot.min.js"
   },
   "repository": {
     "type": "git",
