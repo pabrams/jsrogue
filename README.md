@@ -8,8 +8,9 @@ Now I'm converting it to TypeScript.
 
 ## Compile and Run
 
-To compile and run, you must have node installed.
+You must have node installed.
 
+1. Clone the repository to local folder and open a command prompt
 1. `npm install`
 1. `npm run build`
 1. Double-click index.html and the game should open in your default browser.
