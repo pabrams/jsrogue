@@ -12,7 +12,6 @@
     "uglify-js": "^3.2.2"
   },
   "scripts": {
-    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "npm run minify-rot",
     "minify-rot": "uglifyjs node_modules/rot-js/lib/rot.js -c -m -o node_modules/rot-js/rot.min.js"
