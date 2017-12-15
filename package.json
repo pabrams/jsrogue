@@ -9,6 +9,8 @@
     "tsc": "^1.20150623.0"
   },
   "devDependencies": {
+    "@types/rot-js": "^0.6.1",
+    "@types/sprintf": "^0.1.0",
     "uglify-js": "^3.2.2"
   },
   "scripts": {
